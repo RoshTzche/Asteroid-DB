@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador de Órbitas en Tiempo Real</title>
+    <style>
+        body { margin: 0; background-color: #000; color: #fff; font-family: sans-serif; }
+        canvas { display: block; }
+        #info { position: absolute; top: 10px; left: 10px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div id="info">Cargando datos...</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // --- CONFIGURACIÓN ---
+        const API_URL = 'http://127.0.0.1:5001'; // La URL de tu servidor Flask
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Ajustamos la cámara para una vista "desde arriba"
+        camera.position.set(0, 0, 8); // Vista 2D desde el eje Z
+        camera.lookAt(0, 0, 0);
+
+        // Grupo para los objetos que se moverán (planetas, asteroides)
+        const cuerposCelestes = new THREE.Group();
+        scene.add(cuerposCelestes);
+
+        // --- DIBUJAR ÓRBITAS (DATOS ESTÁTICOS) ---
+        async function dibujarOrbitas() {
+            const response = await fetch(`${API_URL}/api/orbits`);
+            const orbitas = await response.json();
+
+            const materialTierra = new THREE.LineBasicMaterial({ color: 0x0000ff });
+            const materialAsteroide = new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.5 });
+
+            for (const nombre in orbitas) {
+                const puntos = orbitas[nombre].map(p => new THREE.Vector3(p[0], p[1], 0)); // Z es siempre 0
+                const geometria = new THREE.BufferGeometry().setFromPoints(puntos);
+                const lineaOrbita = new THREE.Line(geometria, nombre === 'Tierra' ? materialTierra : materialAsteroide);
+                scene.add(lineaOrbita);
+            }
+        }
+
+        // --- ACTUALIZAR POSICIONES (DATOS EN TIEMPO REAL) ---
+        async function actualizarPosiciones() {
+            try {
+                const response = await fetch(`${API_URL}/api/positions`);
+                const posiciones = await response.json();
+                const infoDiv = document.getElementById('info');
+                infoDiv.innerHTML = '<h2>Posiciones Actuales (AU)</h2>';
+
+                // Limpiamos los objetos anteriores
+                while (cuerposCelestes.children.length) {
+                    cuerposCelestes.remove(cuerposCelestes.children[0]);
+                }
+
+                // Sol
+                const solGeo = new THREE.SphereGeometry(0.1, 32, 32);
+                const solMat = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+                const sol = new THREE.Mesh(solGeo, solMat);
+                cuerposCelestes.add(sol);
+
+                for (const nombre in posiciones) {
+                    const pos = posiciones[nombre];
+                    
+                    const esTierra = nombre === 'Tierra';
+                    const geometria = new THREE.SphereGeometry(esTierra ? 0.05 : 0.02, 16, 16);
+                    const material = new THREE.MeshBasicMaterial({ color: esTierra ? 0x00ffff : 0xff8800 });
+                    const cuerpo = new THREE.Mesh(geometria, material);
+                    
+                    cuerpo.position.set(pos.x, pos.y, 0); // Z es siempre 0
+                    cuerposCelestes.add(cuerpo);
+                    
+                    // Actualizar panel de información
+                    infoDiv.innerHTML += `<b>${nombre}:</b> X=${pos.x.toFixed(3)}, Y=${pos.y.toFixed(3)}<br>`;
+                }
+            } catch (error) {
+                document.getElementById('info').innerText = 'Error al conectar con el servidor. ¿Está app.py en ejecución?';
+                console.error(error);
+            }
+        }
+
+        // --- BUCLE PRINCIPAL ---
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        // Iniciar todo
+        dibujarOrbitas();
+        actualizarPosiciones();
+        setInterval(actualizarPosiciones, 5000); // Actualiza posiciones cada 5 segundos
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Ignorar archivos de caché y bases de datos
+*.json
+*.csv
+
+# Ignorar carpetas de Python
+__pycache__/

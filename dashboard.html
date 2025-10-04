@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Asteroides</title>
+    <style>
+        /* Estilos generales y tema oscuro */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenedor principal */
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* --- Columna de la Lista de Asteroides --- */
+        .sidebar {
+            width: 30%;
+            max-width: 400px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .asteroid-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto; /* Permite el scroll */
+            flex-grow: 1;
+        }
+
+        /* Estilo de los "botones chulos" */
+        .asteroid-list button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            border-radius: 5px;
+            text-align: left;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .asteroid-list button:hover {
+            background-color: #3a3a3a;
+            border-color: #00bcd4;
+        }
+        .asteroid-list button.active {
+            background-color: #00796b;
+            border-color: #d49800;
+            font-weight: bold;
+        }
+
+        /* --- Panel de Detalles del Asteroide --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .details-panel {
+            background-color: #000000;
+            padding: 30px;
+            border-radius: 8px;
+        }
+        .details-panel h1 {
+            margin-top: 0;
+            font-size: 2.5em;
+            color: #eab002; /* Cian para destacar */
+        }
+        .tag {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .tag.peligroso { background-color: #c9302c; }
+        .tag.no-peligroso { background-color: #28a745; }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .data-item {
+            background-color: #090909;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .data-item .label {
+            font-size: 0.8em;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .data-item .value {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #00bcd4;
+        }
+        .curiosidades {
+            margin-top: 30px;
+            background-color: #080808;
+            padding: 20px;
+            border-left: 4px solid #d4aa00;
+            border-radius: 5px;
+        }
+        .curiosidades h3 { margin-top: 0; }
+        .curiosidades ul { padding-left: 20px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Catálogo de Asteroides</h2>
+            <ul id="asteroid-list" class="asteroid-list">
+                </ul>
+        </aside>
+
+        <main class="main-content">
+            <div id="details-panel" class="details-panel">
+                <h1>Selecciona un Asteroide</h1>
+                <p>Haz clic en un asteroide de la lista para ver sus detalles.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const asteroidListElement = document.getElementById('asteroid-list');
+        const detailsPanelElement = document.getElementById('details-panel');
+        let asteroidesData = [];
+
+        async function cargarDatos() {
+            // --- CAMBIO CLAVE: Nombre de archivo más explícito ---
+            const nombreArchivo = 'catalogo_asteroides_web.json';
+            
+            try {
+                const response = await fetch(nombreArchivo);
+                
+                // --- CAMBIO CLAVE: Mejor diagnóstico de errores ---
+                if (!response.ok) {
+                    // Si el estado es 404, es que no encontró el archivo.
+                    if (response.status === 404) {
+                        throw new Error(`Error 404: No se encontró el archivo '${nombreArchivo}'. ¿Está en la misma carpeta y el servidor se inició en el lugar correcto?`);
+                    }
+                    throw new Error(`Error de red! Estado: ${response.status}`);
+                }
+                
+                asteroidesData = await response.json();
+                
+                // --- CAMBIO CLAVE: Manejo de nombres nulos al ordenar ---
+                asteroidesData.sort((a, b) => {
+                    const nameA = a.identificador || ''; // Usa string vacío si es nulo
+                    const nameB = b.identificador || ''; // Usa string vacío si es nulo
+                    return nameA.localeCompare(nameB);
+                });
+                
+                crearListaBotones();
+                // Mostramos el primer asteroide por defecto
+                if (asteroidesData.length > 0) {
+                    mostrarDetalles(0);
+                }
+
+            } catch (error) {
+                detailsPanelElement.innerHTML = `<h1>Error al Cargar Datos</h1><p>${error.message}</p>`;
+                console.error("Error detallado en la consola:", error);
+            }
+        }
+
+        function crearListaBotones() {
+            asteroidListElement.innerHTML = '';
+            asteroidesData.forEach((asteroide, index) => {
+                const button = document.createElement('button');
+                // Usamos el nuevo campo 'identificador' que nunca es nulo
+                button.textContent = asteroide.identificador || `Asteroide sin nombre #${index}`;
+                button.dataset.index = index;
+                button.onclick = () => mostrarDetalles(index);
+                asteroidListElement.appendChild(button);
+            });
+        }
+
+        function mostrarDetalles(index) {
+            const asteroide = asteroidesData[index];
+
+            document.querySelectorAll('.asteroid-list button').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.index) === index) {
+                    btn.classList.add('active');
+                }
+            });
+
+            const esPeligroso = asteroide.es_peligroso === true || asteroide.es_peligroso === 'Y';
+            const tagClass = esPeligroso ? 'peligroso' : 'no-peligroso';
+            const tagText = esPeligroso ? 'Potencialmente Peligroso' : 'No Peligroso';
+
+            detailsPanelElement.innerHTML = `
+                <h1>${asteroide.identificador}</h1>
+                <span class="tag ${tagClass}">${tagText}</span>
+                
+                <div class="data-grid">
+                    <div class="data-item">
+                        <div class="label">Diámetro Estimado</div>
+                        <div class="value">${asteroide.diameter ? asteroide.diameter.toFixed(2) + ' km' : 'N/A'}</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Magnitud Absoluta</div>
+                        <div class="value">${asteroide.magnitud_absoluta ? asteroide.magnitud_absoluta.toFixed(2) : 'N/A'}</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Período Orbital</div>
+                        <div class="value">${asteroide.periodo_orbital_anios ? asteroide.periodo_orbital_anios.toFixed(2) + ' años' : 'N/A'}</div>
+                    </div>
+                    <div class="data-item">
+                        <div class="label">Distancia Mínima Orbital</div>
+                        <div class="value">${asteroide.distancia_min_orbita_au ? asteroide.distancia_min_orbita_au.toFixed(4) + ' AU' : 'N/A'}</div>
+                    </div>
+                </div>
+
+                <div class="curiosidades">
+                    <h3>🚀 Datos Curiosos</h3>
+                    <ul>${generarDatosCuriosos(asteroide)}</ul>
+                </div>
+            `;
+        }
+
+        function generarDatosCuriosos(asteroide) {
+            let curiosidadesHTML = '';
+            
+            if (asteroide.diameter) {
+                const diametro_m = asteroide.diameter * 1000;
+                let comparacion = '';
+                if (diametro_m > 800) comparacion = 'más alto que el Burj Khalifa';
+                else if (diametro_m > 300) comparacion = 'casi tan alto como la Torre Eiffel';
+                else if (diametro_m > 100) comparacion = 'del tamaño de un campo de fútbol';
+                else comparacion = 'tan grande como un edificio de varios pisos';
+                curiosidadesHTML += `<li>Con un diámetro de <b>${asteroide.diameter.toFixed(2)} km</b>, es ${comparacion}.</li>`;
+            }
+
+            if (asteroide.periodo_orbital_anios) {
+                curiosidadesHTML += `<li>Tarda <b>${asteroide.periodo_orbital_anios.toFixed(2)} años terrestres</b> en dar una vuelta al Sol.</li>`;
+            }
+            
+            if (asteroide.distancia_min_orbita_au) {
+                const distLunar = asteroide.distancia_min_orbita_au * 389;
+                curiosidadesHTML += `<li>La distancia mínima entre su órbita y la de la Tierra es de <b>${distLunar.toFixed(2)} veces</b> la distancia a la Luna.</li>`;
+            }
+
+            return curiosidadesHTML || '<li>No hay datos curiosos disponibles.</li>';
+        }
+
+        cargarDatos();
+    </script>
+
+</body>
+</html>
