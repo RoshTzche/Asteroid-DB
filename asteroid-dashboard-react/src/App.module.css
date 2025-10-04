@@ -1,0 +1,38 @@
+/* src/App.module.css */
+.appContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  background-color: #1e293b; /* space-light */
+  padding: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.navLink {
+  font-size: 1.25rem;
+  font-weight: bold;
+  transition: color 0.2s;
+  text-decoration: none;
+  color: #e2e8f0;
+  margin: 0 1rem;
+}
+
+.navLink:hover {
+  color: #facc15; /* primary-yellow */
+}
+
+/* React Router nos da una clase "active" automáticamente */
+.navLink.active {
+  color: #facc15; /* primary-yellow */
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow: hidden;
+}

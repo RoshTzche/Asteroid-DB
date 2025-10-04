@@ -1,0 +1,16 @@
+/* src/components/AsteroidDashboard.module.css */
+.dashboardContainer {
+  display: flex;
+  height: calc(100vh - 100px); /* Ajustamos la altura */
+  gap: 1rem;
+}
+
+.listColumn {
+  width: 33.333333%;
+  max-width: 24rem; /* 384px */
+}
+
+.detailsColumn {
+  width: 66.666667%;
+  flex-grow: 1;
+}
