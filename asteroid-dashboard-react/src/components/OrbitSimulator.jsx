@@ -3,7 +3,6 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { Line, Text, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-// No local CSS import is needed
 
 // This is now the INITIAL state for the planet colors
 const INITIAL_PLANET_COLORS = {
@@ -16,6 +15,17 @@ const INITIAL_PLANET_COLORS = {
   "Uranus": "#a8e6e6",
   "Neptune": "#6a82d4",
 };
+
+// Background component for space
+function SpaceBackground() {
+  const texture = useLoader(THREE.TextureLoader, '/8k_stars_milky_way.jpg');
+  return (
+    <mesh>
+      <sphereGeometry args={[500, 60, 40]} />
+      <meshBasicMaterial map={texture} side={THREE.BackSide} />
+    </mesh>
+  );
+}
 
 function Sun() {
   const sunTexture = useLoader(THREE.TextureLoader, '/2k_sun.jpg');
@@ -52,6 +62,7 @@ function Scene({ planetColors, asteroidColor }) {
 
   return (
     <>
+      <SpaceBackground />
       <Sun />
 
       {Object.values(orbits).map((orbitData) => {
@@ -76,7 +87,7 @@ function Scene({ planetColors, asteroidColor }) {
   );
 }
 
-function OrbitSimulator() {
+function OrbitSimulator({ onReturn }) {
   const [planetColors, setPlanetColors] = useState(INITIAL_PLANET_COLORS);
   const [asteroidColor, setAsteroidColor] = useState('#475569');
 
@@ -86,6 +97,12 @@ function OrbitSimulator() {
       ...prevColors,
       [planetName]: newColor,
     }));
+  };
+
+  // Handler to refresh colors to initial state
+  const handleRefresh = () => {
+    setPlanetColors(INITIAL_PLANET_COLORS);
+    setAsteroidColor('#475569');
   };
 
   return (
@@ -121,10 +138,21 @@ function OrbitSimulator() {
         </div>
       </div>
 
+      {/* Bottom right buttons */}
+      <div className="simulatorButtons">
+        <button className="simulatorActionButton refreshButton" onClick={handleRefresh}>
+          ↻ Refresh
+        </button>
+        <button className="simulatorActionButton refreshButton" onClick={onReturn}>
+          ← Return
+        </button>
+      </div>
+
+
       <Suspense fallback={<div className="text-white">Loading Simulator...</div>}>
         <Canvas camera={{ position: [20, -20, 20], fov: 75, near: 0.1, far: 1000 }}>
           <Scene planetColors={planetColors} asteroidColor={asteroidColor} />
-          <OrbitControls minDistance={2} maxDistance={60} />
+          <OrbitControls minDistance={1} maxDistance={80} />
         </Canvas>
       </Suspense>
     </div>

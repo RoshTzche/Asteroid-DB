@@ -10,8 +10,8 @@
     --red-600: #dc2626; /* Hazardous tag */
     --green-600: #16a34a; /* Safe tag */
     --red-500: #ef4444; /* Hazardous indicator */
-    --green-indicator: #88eb06; /* Safe indicator */
-    --slate-700: #0d1015; /* Fondo items */
+    --green-indicatorRefresh: #88eb06; /* Safe indicator */
+    --slate-700: #10131d; /* Fondo items */
     --slate-600: #475569; /* Hover */
     --slate-300: #cbd5e1; /* Subtítulos */
     --gray-400: #9ca3af; /* Labels y loading */
@@ -33,9 +33,10 @@
 .dashboardContainer {
     display: flex;
     height: 100%;
-    padding: var(--padding-standard);
+    padding: 0.2rem;
     box-sizing: border-box;
-    gap: var(--padding-standard);
+    gap: 0.5rem;
+
 }
 
 .listColumn {
@@ -67,6 +68,8 @@
     justify-content: center;
     height: 100%;
     text-align: center;
+    background: var(--slate-700);
+    
 }
 
 .welcomeTitle {
@@ -79,6 +82,7 @@
     margin-top: var(--padding-standard);
     font-size: 1.25rem;
     color: var(--slate-300);
+    text-shadow: 0 0 5px #575252, 0 0 10px #39391a, 0 0 20px #facc15, 0 0 40px #facc15, 0 0 80px #243535, 0 0 90px #1c1c1c, 0 0 100px #264d4d, 0 0 150px #3e3e3e;
 }
 
 .detailsTitle {
@@ -160,16 +164,16 @@
 
 /* Estilos de AsteroidList */
 .listContainer {
-    background-color: var(--space-light);
+    
     height: 100%;
     border-radius: var(--border-radius-standard);
-    padding: var(--padding-standard);
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
 }
 
 .listTitle {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: var(--font-bold);
     margin-bottom: var(--padding-standard);
     border-bottom: 2px solid var(--border-dark);
@@ -178,9 +182,8 @@
 }
 
 .list {
-    overflow-y: auto;
+    overflow-y:scroll;
     flex-grow: 1;
-    padding-right: 0.5rem;
     list-style: none;
     padding-left: 0;
 }
@@ -209,7 +212,7 @@
 
 .listItem:hover {
     background-color: var(--slate-600);
-    transform: scale(1.02);
+    transform: scale(1.002);
 }
 
 .selected {
@@ -248,7 +251,7 @@
 .safeIndicator {
     width: 10px;
     height: 10px;
-    background-color: var(--green-indicator);
+    background-color: var(--green-indicatorRefresh);
     border-radius: 50%;
     flex-shrink: 0;
     margin-left: 0.75rem;
@@ -278,15 +281,14 @@
 
 /* Estilos adicionales para clases en JSX no definidas en módulos originales (reciclando variables) */
 .controlsContainer {
-    margin-bottom: var(--padding-standard);
 }
 
 .searchInput {
-    width: 100%;
+    width: 95%;
     padding: 0.5rem;
     background-color: var(--slate-700);
     color: white;
-    border: 1px solid var(--border-dark);
+    border: 1px solid var(--primary-yellow);
     border-radius: var(--border-radius-small);
     margin-bottom: 0.5rem;
     font-size: 1rem;
@@ -304,50 +306,34 @@
 
 /* Estilos para OrbitSimulator (traducidos de Tailwind a custom, para unificación) */
 .simulatorContainer {
-    position: absolute;
-    top: 1.25rem; /* top-5 en Tailwind */
-    right: 1.25rem; /* right-5 */
+    position: absolute; /* right-5 */
     width: 100%;
     height: 100%;
-    border: 2px solid white;
+    border: 2px var(--slate-600);
     border-radius: var(--border-radius-standard);
     overflow: hidden;
     z-index: 10;
 }
 
-@media (max-width: 768px) {
-  .dashboardContainer {
-    flex-direction: column;
-  }
-  .listColumn, .detailsColumn {
-    width: 100%;
-    max-width: none;
-  }
-  .dataGrid {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* -----------------------------------------------*/
 /* ORBIT SIMULATOR*/
 
 .simulatorWrapper {
-  position: relative;
-  width: 95%;
+  width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: var(--color-background);
-  border-radius: var(--radius-main);
+  border-radius: var(--border-radius-standard);
+  border-color: ;
 }
 
 /* Main panel is now horizontal */
 .controlsPanel {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background-color: rgba(13, 16, 21, 0.8);
-  backdrop-filter: blur(5px);
+  top: 0.4rem;
+  left: 0.4rem;
+  backdrop-filter: blur(3px);
   padding: 0.75rem;
-  border-radius: var(--radius-main);
+  border-radius: var(--border-radius-small);
   border: 1px solid var(--color-border);
   z-index: 10;
   display: flex; /* Changed to flex for horizontal layout */
@@ -395,3 +381,297 @@
   border: 2px solid var(--color-border-hover);
   border-radius: 50%;
 }
+
+/* Appended styles for new filters and info popup */
+
+.listTitleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--padding-standard);
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.suggestionButton {
+  background-color: var(--slate-600);
+  color: var(--primary-yellow);
+  border: 1px solid var(--primary-yellow);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-standard);
+}
+
+.suggestionButton:hover {
+  background-color: var(--primary-yellow);
+  color: var(--space-dark);
+}
+
+.filterGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterLabel {
+  font-size: 0.8rem;
+  color: var(--slate-300);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.filterSelect {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--slate-700);
+  color: white;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--border-radius-small);
+  font-size: 0.9rem;
+}
+
+/* Info Popup Styles */
+.infoPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.infoPopupContent {
+  background-color: var(--space-dark);
+  padding: 2rem;
+  border-radius: var(--border-radius-standard);
+  border: 1px solid var(--primary-yellow);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: var(--shadow-hover);
+}
+
+.infoPopupTitle {
+  color: var(--primary-yellow);
+  margin-top: 0;
+  border-bottom: 1px solid var(--border-dark);
+  padding-bottom: 0.5rem;
+}
+
+.infoPopupContent ul {
+  padding-left: 1.2rem;
+  color: var(--slate-300);
+}
+
+.infoPopupContent ul li {
+  margin-bottom: 0.75rem;
+}
+
+.infoPopupContent ul ul {
+  margin-top: 0.5rem;
+}
+
+.infoPopupCloseButton {
+  background-color: var(--slate-700);
+  color: white;
+  border: 1px solid var(--border-dark);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: var(--transition-standard);
+  margin-top: 1.5rem;
+  display: block;
+  margin-left: auto;
+}
+
+.infoPopupCloseButton:hover {
+  background-color: var(--slate-600);
+}
+
+/* Appended styles for new interactive modules */
+
+.moduleGroup {
+  margin-top: 2.5rem;
+}
+
+.moduleGroupTitle {
+  font-size: 1.25rem;
+  color: var(--slate-300);
+  border-bottom: 1px solid var(--border-dark);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.moduleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.moduleButton {
+  background-color: var(--gray-900-opacity);
+  border-radius: var(--border-radius-standard);
+  padding: 1rem;
+  border: 1px solid var(--border-dark);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 90px;
+}
+
+.moduleButton:hover {
+  background-color: #1a2233;
+  border-color: var(--accent-cyan);
+}
+
+.moduleButton .dataValue {
+  font-size: 1.75rem; /* Larger font for the value */
+  color: var(--accent-cyan);
+}
+
+.moduleButton .dataUnit {
+  font-size: 1rem;
+  color: var(--gray-400);
+  margin-left: 0.25rem;
+}
+
+/* Updated Popup Styles for better presentation */
+.infoPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.infoPopupContent {
+  background-color: #161e2d; /* Slightly lighter than space-dark */
+  padding: 2rem;
+  border-radius: var(--border-radius-standard);
+  border-top: 4px solid var(--primary-yellow);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: var(--shadow-hover);
+}
+
+.infoPopupTitle {
+  color: var(--primary-yellow);
+  margin-top: 0;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.infoPopupDescription {
+  color: var(--slate-300);
+  line-height: 1.6;
+}
+
+.infoPopupCloseButton {
+  background-color: var(--primary-yellow);
+  color: var(--space-dark);
+  font-weight: bold;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: var(--transition-standard);
+  margin-top: 1.5rem;
+  float: right; /* Position to the right */
+}
+
+.infoPopupCloseButton:hover {
+  background-color: var(--yellow-300);
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboardContainer {
+    flex-direction: column;
+  }
+  .listColumn, .detailsColumn {
+    width: 100%;
+    max-width: none;
+  }
+  .dataGrid {
+    grid-template-columns: 1fr;
+  }
+  .controlsPanel {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .planetsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .simulatorButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+
+/* Bottom right buttons container */
+.simulatorButtons {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.simulatorActionButton {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+}
+
+.refreshButton {
+  background-color: var(--primary-yellow);
+  color: var(--space-dark);
+}
+
+.refreshButton:hover {
+  background-color: var(--yellow-300);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+

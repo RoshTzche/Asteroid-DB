@@ -5,16 +5,16 @@ const useAsteroidStore = create((set) => ({
   asteroids: [],
   selectedAsteroid: null,
   searchTerm: '',
-  filter: 'all',
-  diameterFilter: 'all', // New state for diameter
-  periodFilter: 'all',   // New state for orbital period
+  filter: 'all', // For PHA status
+  nameFilter: 'all', // New state for name filter
+  diameterFilter: 'all', // Existing state for diameter
   
   setAsteroids: (data) => set({ asteroids: data }),
   setSelectedAsteroid: (asteroid) => set({ selectedAsteroid: asteroid }),
   setSearchTerm: (term) => set({ searchTerm: term }),
   setFilter: (filterType) => set({ filter: filterType }),
+  setNameFilter: (filter) => set({ nameFilter: filter }), // New setter for name filter
   setDiameterFilter: (size) => set({ diameterFilter: size }),
-  setPeriodFilter: (duration) => set({ periodFilter: duration }),
 }));
 
 export default useAsteroidStore;
