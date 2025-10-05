@@ -1,0 +1,277 @@
+/* styles.css - CSS unificado para Asteroid-DB Dashboard (combinando AsteroidDashboard, AsteroidDetails y AsteroidList) */
+
+/* Variables para reciclar colores, tamaños y estilos comunes (reutilización máxima) */
+:root {
+    --space-light: #000000; /* Fondo principal oscuro */
+    --space-dark: #0f172a; /* Texto oscuro */
+    --primary-yellow: #facc15; /* Amarillo principal */
+    --yellow-300: #fde047; /* Variante hover */
+    --accent-cyan: #b6bc7c; /* Valores de datos */
+    --red-600: #dc2626; /* Hazardous tag */
+    --green-600: #16a34a; /* Safe tag */
+    --red-500: #ef4444; /* Hazardous indicator */
+    --green-indicator: #88eb06; /* Safe indicator (corregido de red-500 en original) */
+    --slate-700: #0d1015; /* Fondo items */
+    --slate-600: #475569; /* Hover */
+    --slate-300: #cbd5e1; /* Subtítulos */
+    --gray-400: #9ca3af; /* Labels y loading */
+    --gray-900-opacity: rgba(15, 23, 42, 0.6); /* Data cards */
+    --border-dark: #000101; /* Bordes */
+    --border-slate-700: #050708; /* Bordes button container */
+    --padding-standard: 1rem;
+    --border-radius-standard: 0.5rem;
+    --border-radius-pill: 9999px;
+    --border-radius-small: 0.375rem;
+    --font-bold: bold;
+    --transition-standard: all 0.2s;
+    --shadow-standard: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Estilos de AsteroidDashboard (dashboardContainer, listColumn, detailsColumn) */
+.dashboardContainer {
+    display: flex;
+    height: 100%; /* Use the full height of the parent */
+    padding: var(--padding-standard); /* Add the padding here */
+    box-sizing: border-box; /* Ensure padding doesn't add to the total size */
+    gap: var(--padding-standard);
+}
+
+.listColumn {
+    width: 33.333333%;
+    max-width: 24rem; /* 384px */
+}
+
+.detailsColumn {
+    width: 66.666667%;
+    height: 100%;
+    flex-grow: 1;
+    /* New properties to center the content */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos de AsteroidDetails (detailsPanel, welcomeMessage, etc.) */
+.detailsPanel {
+    padding: 2rem;
+    background-color: var(--space-light);
+    border-radius: var(--border-radius-standard);
+    height: 100%;
+    overflow-y: auto;
+}
+
+.welcomeMessage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+.welcomeTitle {
+    font-size: 2.25rem;
+    font-weight: var(--font-bold);
+    color: var(--primary-yellow);
+}
+
+.welcomeSubtitle {
+    margin-top: var(--padding-standard);
+    font-size: 1.25rem;
+    color: var(--slate-300);
+}
+
+.detailsTitle { /* Renombrado para evitar conflicto con .title de List */
+    font-size: 3rem;
+    font-weight: var(--font-bold);
+    margin-bottom: 0.5rem;
+    color: var(--primary-yellow);
+}
+
+.tag {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: var(--font-bold);
+    border-radius: var(--border-radius-pill);
+    color: white;
+}
+
+.hazardous {
+    background-color: var(--red-600);
+}
+
+.safe {
+    background-color: var(--green-600);
+}
+
+.dataGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.dataCard {
+    background-color: var(--gray-900-opacity);
+    padding: var(--padding-standard);
+    border-radius: var(--border-radius-standard);
+    box-shadow: var(--shadow-card);
+}
+
+.dataLabel {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dataValue {
+    font-size: 1.5rem;
+    font-weight: var(--font-bold);
+    color: var(--accent-cyan);
+}
+
+.buttonContainer {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-slate-700);
+    display: flex;
+    justify-content: center;
+}
+
+.simulatorButton {
+    background-color: var(--primary-yellow);
+    color: var(--space-dark);
+    font-weight: var(--font-bold);
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius-standard);
+    cursor: pointer;
+    transition: var(--transition-standard) ease-in-out;
+    box-shadow: var(--shadow-standard);
+}
+
+.simulatorButton:hover {
+    background-color: var(--yellow-300);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Estilos de AsteroidList (listContainer, title, etc.) */
+.listContainer {
+    background-color: var(--space-light);
+    height: 100%;
+    border-radius: var(--border-radius-standard);
+    padding: var(--padding-standard);
+    display: flex;
+    flex-direction: column;
+}
+
+.listTitle { /* Renombrado para evitar conflicto con .title de Details */
+    font-size: 1.5rem;
+    font-weight: var(--font-bold);
+    margin-bottom: var(--padding-standard);
+    border-bottom: 2px solid var(--border-dark);
+    padding-bottom: 0.5rem;
+    color: var(--primary-yellow);
+}
+
+.list {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding-right: 0.5rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.loading {
+    padding: var(--padding-standard);
+    font-style: italic;
+    color: var(--gray-400);
+}
+
+.listItem {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: var(--border-radius-small);
+    transition: var(--transition-standard);
+    cursor: pointer;
+    border: none;
+    background-color: var(--slate-700);
+    color: #e2e8f0; /* No variable, pero se puede agregar si se repite */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.listItem:hover {
+    background-color: var(--slate-600);
+    transform: scale(1.02);
+}
+
+.selected {
+    background-color: var(--primary-yellow);
+    color: var(--space-dark);
+    font-weight: var(--font-bold);
+    box-shadow: var(--shadow-standard);
+}
+
+.itemContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.itemName {
+    font-size: 1rem;
+    font-weight: var(--font-bold);
+}
+
+.itemDetails {
+    font-size: 0.8rem;
+    color: var(--slate-300);
+    margin-top: 0.25rem;
+}
+
+.hazardousIndicator {
+    width: 10px;
+    height: 10px;
+    background-color: var(--red-500);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+    box-shadow: 0 0 8px var(--red-500);
+}
+
+.safeIndicator {
+    width: 10px;
+    height: 10px;
+    background-color: var(--green-indicator);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+    box-shadow: 0 0 8px #97c900; /* Valor hardcodeado en original, se puede variable si se quiere */
+}
+
+.tabButton {
+    width: 33%;
+    text-align: center;
+    padding: 0.75rem;
+    margin: 0.25rem 0;
+    border-radius: var(--border-radius-small);
+    transition: var(--transition-standard);
+    cursor: pointer;
+    border: none;
+    background-color: var(--slate-700);
+    color: #e2e8f0;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tabButton:hover {
+    background-color: var(--slate-600);
+    transform: scale(1.02);
+}

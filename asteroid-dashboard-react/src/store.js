@@ -1,12 +1,16 @@
 // src/store.js
 import { create } from 'zustand';
 
-// ¡Nuestra pequeña tienda de datos!
 const useAsteroidStore = create((set) => ({
-  asteroids: [], // Aquí guardaremos la lista completa de asteroides
-  selectedAsteroid: null, // Y aquí el que seleccionemos
+  asteroids: [],
+  selectedAsteroid: null,
+  searchTerm: '', // State for the search input
+  filter: 'all',   // State for the filter: 'all', 'pha', 'non-pha'
+  
   setAsteroids: (data) => set({ asteroids: data }),
   setSelectedAsteroid: (asteroid) => set({ selectedAsteroid: asteroid }),
+  setSearchTerm: (term) => set({ searchTerm: term }),
+  setFilter: (filterType) => set({ filter: filterType }),
 }));
 
 export default useAsteroidStore;
