@@ -3,6 +3,6 @@
 *.csv
 
 !asteroid-dashboard-react/package.json
-
+!asteroid-dashboard-react/public/catalogo_asteroides_web.json
 # Ignorar carpetas de Python
 __pycache__/

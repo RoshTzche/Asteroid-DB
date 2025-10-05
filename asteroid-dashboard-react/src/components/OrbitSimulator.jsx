@@ -89,7 +89,7 @@ function Scene({ planetColors, asteroidColor }) {
 
 function OrbitSimulator({ onReturn }) {
   const [planetColors, setPlanetColors] = useState(INITIAL_PLANET_COLORS);
-  const [asteroidColor, setAsteroidColor] = useState('#475569');
+  const [asteroidColor, setAsteroidColor] = useState('#8c949fff');
 
   // Handler to update a specific planet's color
   const handlePlanetColorChange = (planetName, newColor) => {
@@ -153,7 +153,7 @@ function OrbitSimulator({ onReturn }) {
 
 
       <Suspense fallback={<div className="text-white">Loading Simulator...</div>}>
-        <Canvas camera={{ position: [20, -20, 20], fov: 75, near: 0.1, far: 1000 }}>
+        <Canvas camera={{ position: [0, 10, 0], fov: 75, near: 0.1, far: 1000 }}>
           <Scene planetColors={planetColors} asteroidColor={asteroidColor} />
           <OrbitControls minDistance={1} maxDistance={80} />
         </Canvas>
