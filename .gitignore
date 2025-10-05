@@ -2,5 +2,7 @@
 *.json
 *.csv
 
+!asteroid-dashboard-react/package.json
+
 # Ignorar carpetas de Python
 __pycache__/
