@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import useAsteroidStore from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
-import OrbitSimulator from './OrbitSimulator'; // Import OrbitSimulator here
+import OrbitSimulator from './OrbitSimulator';
 
 // --- Reusable Popup Component ---
 function InfoPopup({ content, onClose }) {
@@ -87,72 +87,22 @@ function AsteroidDetails() {
   const { selectedAsteroid } = useAsteroidStore();
   const [popupContent, setPopupContent] = useState(null);
   const [showSimulator, setShowSimulator] = useState(false);
-  const [simulatorKey, setSimulatorKey] = useState(0); // Clave para forzar recreación
-  const [isLoading, setIsLoading] = useState(false); // Estado de carga
-  const [hasError, setHasError] = useState(false); // Estado de error
+  const [simulatorKey, setSimulatorKey] = useState(0);
 
   useEffect(() => {
     if (selectedAsteroid) {
       setShowSimulator(false);
-      setSimulatorKey((prev) => prev + 1); // Cambia la clave al cambiar de asteroide
-      setHasError(false); // Resetea el estado de error
+      setSimulatorKey((prev) => prev + 1);
     }
   }, [selectedAsteroid]);
-
-  // Simula la carga del OrbitSimulator
-  useEffect(() => {
-    if (showSimulator) {
-      setIsLoading(true);
-      // Simula un tiempo de carga o inicialización (ajusta según el caso)
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 1000); // Ajusta el tiempo según sea necesario
-
-      return () => clearTimeout(timer);
-    }
-  }, [showSimulator, simulatorKey]);
-
-  // Manejo de errores
-  const handleSimulatorError = () => {
-    setHasError(true);
-    setIsLoading(false);
-  };
 
   if (showSimulator) {
     return (
       <div className="simulatorContainer">
-        {isLoading && <div className="loadingSpinner">Loading Orbit Simulator...</div>}
-        {hasError ? (
-          <div className="errorMessage">
-            <p>Failed to load Orbit Simulator.</p>
-            <button
-              className="retryButton"
-              onClick={() => {
-                setSimulatorKey((prev) => prev + 1); // Forzar recreación
-                setIsLoading(true);
-                setHasError(false);
-              }}
-            >
-              Retry
-            </button>
-            <button
-              className="backButton"
-              onClick={() => setShowSimulator(false)}
-            >
-              Back to Details
-            </button>
-          </div>
-        ) : (
-          <div className="simulatorWrapper">
-            <OrbitSimulator key={simulatorKey} />
-            <button
-              className="backButton"
-              onClick={() => setShowSimulator(false)}
-            >
-              Back to Details
-            </button>
-          </div>
-        )}
+        <OrbitSimulator 
+          key={simulatorKey} 
+          onReturn={() => setShowSimulator(false)}
+        />
       </div>
     );
   }

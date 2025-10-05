@@ -1,5 +1,5 @@
 // src/components/OrbitSimulator.jsx
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { Line, Text, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -41,8 +41,8 @@ function Sun() {
   );
 }
 
-// Scene now accepts the full color objects as props
-function Scene({ planetColors, asteroidColor }) {
+// Scene now accepts the full color objects as props and hideOrbits state
+function Scene({ planetColors, asteroidColor, hideOrbits, hiddenAsteroids }) {
   const [orbits, setOrbits] = useState({});
   const [error, setError] = useState(null);
 
@@ -65,17 +65,23 @@ function Scene({ planetColors, asteroidColor }) {
       <SpaceBackground />
       <Sun />
 
-      {Object.values(orbits).map((orbitData) => {
+      {Object.entries(orbits).map(([nombre, orbitData]) => {
         if (!orbitData.coordenadas) return null;
         
         // Check if the orbit belongs to a planet using the passed colors object
-        const isPlanet = planetColors.hasOwnProperty(orbitData.nombre);
+        const isPlanet = planetColors.hasOwnProperty(nombre);
+        
+        // Hide asteroid if it's in the hidden list and hideOrbits is active
+        if (!isPlanet && hideOrbits && hiddenAsteroids.current.includes(nombre)) {
+          return null;
+        }
+        
         // Assign color dynamically
-        const color = isPlanet ? planetColors[orbitData.nombre] : asteroidColor;
+        const color = isPlanet ? planetColors[nombre] : asteroidColor;
 
         return (
           <Line
-            key={orbitData.nombre}
+            key={nombre}
             points={orbitData.coordenadas.map(p => new THREE.Vector3(p[0], p[1], p[2]))}
             color={color}
             lineWidth={isPlanet ? 1.5 : 1}
@@ -90,6 +96,61 @@ function Scene({ planetColors, asteroidColor }) {
 function OrbitSimulator({ onReturn }) {
   const [planetColors, setPlanetColors] = useState(INITIAL_PLANET_COLORS);
   const [asteroidColor, setAsteroidColor] = useState('#8c949fff');
+  const [canvasKey, setCanvasKey] = useState(0);
+  const [hideOrbits, setHideOrbits] = useState(false);
+  
+  // Use ref to store fixed hidden asteroids
+  const hiddenAsteroids = useRef([]);
+  const isInitialized = useRef(false);
+
+  // Initialize hidden asteroids once when orbits are loaded
+  useEffect(() => {
+    if (!isInitialized.current) {
+      async function initHiddenAsteroids() {
+        try {
+          const response = await fetch('/orbitas_3d.json');
+          if (response.ok) {
+            const data = await response.json();
+            const allOrbitNames = Object.keys(data);
+            
+            // Filter out planets to get only asteroids
+            const asteroidNames = allOrbitNames.filter(
+              name => !INITIAL_PLANET_COLORS.hasOwnProperty(name)
+            );
+            
+            // Generate fixed random list using deterministic seed
+            const seededRandom = (seed) => {
+              let x = Math.sin(seed++) * 10000;
+              return x - Math.floor(x);
+            };
+            
+            const shuffled = [...asteroidNames];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+              const j = Math.floor(seededRandom(i + 42) * (i + 1));
+              [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            
+            // Store 99 asteroids to hide (or less if there aren't that many)
+            hiddenAsteroids.current = shuffled.slice(0, Math.min(99, asteroidNames.length));
+            isInitialized.current = true;
+          }
+        } catch (e) {
+          console.error('Error loading orbits for hiding:', e);
+        }
+      }
+      
+      initHiddenAsteroids();
+    }
+  }, []);
+
+  // Auto-refresh 1 second after opening
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCanvasKey(prev => prev + 1);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Handler to update a specific planet's color
   const handlePlanetColorChange = (planetName, newColor) => {
@@ -99,10 +160,16 @@ function OrbitSimulator({ onReturn }) {
     }));
   };
 
-  // Handler to refresh colors to initial state
+  // Handler to refresh - reload everything
   const handleRefresh = () => {
     setPlanetColors(INITIAL_PLANET_COLORS);
-    setAsteroidColor('#475569');
+    setAsteroidColor('#8c949fff');
+    setCanvasKey(prev => prev + 1); // Force complete Canvas remount
+  };
+
+  // Toggle hide orbits
+  const toggleHideOrbits = () => {
+    setHideOrbits(prev => !prev);
   };
 
   return (
@@ -146,15 +213,19 @@ function OrbitSimulator({ onReturn }) {
         <button className="simulatorActionButton refreshButton" onClick={onReturn}>
           ← Return
         </button>
-        <button className='simulatorActionButton refreshButton'>
-          Hide Orbits
+        <button className='simulatorActionButton refreshButton' onClick={toggleHideOrbits}>
+          {hideOrbits ? 'Show Orbits' : 'Hide Orbits'}
         </button>
       </div>
 
-
       <Suspense fallback={<div className="text-white">Loading Simulator...</div>}>
-        <Canvas camera={{ position: [0, 10, 0], fov: 75, near: 0.1, far: 1000 }}>
-          <Scene planetColors={planetColors} asteroidColor={asteroidColor} />
+        <Canvas key={canvasKey} camera={{ position: [0, 10, 0], fov: 75, near: 0.1, far: 1000 }}>
+          <Scene 
+            planetColors={planetColors} 
+            asteroidColor={asteroidColor}
+            hideOrbits={hideOrbits}
+            hiddenAsteroids={hiddenAsteroids}
+          />
           <OrbitControls minDistance={1} maxDistance={80} />
         </Canvas>
       </Suspense>
