@@ -37,7 +37,6 @@ const ModuleButton = ({ label, value, onClick, unit = '' }) => (
   <motion.button
     className="moduleButton"
     onClick={onClick}
-    whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
   >
     <div className="dataLabel">{label}</div>
@@ -190,7 +189,7 @@ function AsteroidDetails() {
           </button>
         </div>
         
-        <div className="moduleGroup">
+        <div className='moduleGroup'>
           <h2 className="moduleGroupTitle">Distances & Orbit</h2>
           <div className="moduleGrid">
             <ModuleButton label="Min. Orbit Distance" value={selectedAsteroid.distancia_min_orbita_au?.toFixed(4) || 'N/A'} unit="AU" onClick={() => setPopupContent(POPUP_DEFINITIONS.MOID)} />
@@ -208,7 +207,7 @@ function AsteroidDetails() {
           </div>
         </div>
         
-        <div className="moduleGroup">
+        <div className="moduleGroup2">
           <h2 className="moduleGroupTitle">Luminance & Hazard</h2>
           <div className="moduleGrid">
             <ModuleButton label="Absolute Magnitude" value={selectedAsteroid.magnitud_absoluta?.toFixed(2) || 'N/A'} onClick={() => setPopupContent(POPUP_DEFINITIONS.MAGNITUDE)} />

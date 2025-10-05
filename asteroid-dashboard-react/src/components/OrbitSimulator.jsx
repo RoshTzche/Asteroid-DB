@@ -146,6 +146,9 @@ function OrbitSimulator({ onReturn }) {
         <button className="simulatorActionButton refreshButton" onClick={onReturn}>
           ← Return
         </button>
+        <button className='simulatorActionButton refreshButton'>
+          Hide Orbits
+        </button>
       </div>
 
 

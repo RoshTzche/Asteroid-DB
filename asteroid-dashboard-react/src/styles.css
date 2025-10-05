@@ -56,10 +56,13 @@
 /* Estilos de AsteroidDetails */
 .detailsPanel {
     padding: 2rem;
-    background-color: var(--space-light);
+    background-color: #222531;
     border-radius: var(--border-radius-standard);
     height: 100%;
     overflow-y: auto;
+}
+.moduleGroup2{
+    margin-bottom: 6rem;
 }
 
 .welcomeMessage {
@@ -84,12 +87,16 @@
     color: var(--slate-300);
     text-shadow: 0 0 5px #575252, 0 0 10px #39391a, 0 0 20px #facc15, 0 0 40px #facc15, 0 0 80px #243535, 0 0 90px #1c1c1c, 0 0 100px #264d4d, 0 0 150px #3e3e3e;
 }
-
+.detailsHeader {
+    text-align: right;
+}
 .detailsTitle {
     font-size: 3rem;
     font-weight: var(--font-bold);
     margin-bottom: 0.5rem;
     color: var(--primary-yellow);
+    text-align: right;
+    margin-top: 0rem;
 }
 
 .tag {
@@ -124,7 +131,7 @@
 
 .dataLabel {
     font-size: 0.875rem;
-    color: var(--gray-400);
+    color: var(--slate-300);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -132,7 +139,7 @@
 .dataValue {
     font-size: 1.5rem;
     font-weight: var(--font-bold);
-    color: var(--accent-cyan);
+    color: #bef6ff;
 }
 
 .buttonContainer {
@@ -506,16 +513,12 @@
 
 /* Appended styles for new interactive modules */
 
-.moduleGroup {
-  margin-top: 2.5rem;
-}
 
 .moduleGroupTitle {
-  font-size: 1.25rem;
   color: var(--slate-300);
-  border-bottom: 1px solid var(--border-dark);
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .moduleGrid {
@@ -525,7 +528,7 @@
 }
 
 .moduleButton {
-  background-color: var(--gray-900-opacity);
+  background-color: var(--border-slate-700);
   border-radius: var(--border-radius-standard);
   padding: 1rem;
   border: 1px solid var(--border-dark);
@@ -540,14 +543,13 @@
 }
 
 .moduleButton:hover {
-  background-color: #1a2233;
-  border-color: var(--accent-cyan);
+  background-color: var(--space-light);
+  border-color: var(--primary-yellow);
+  transform:translateX(2px);
+  scale: 1.0;
 }
 
-.moduleButton .dataValue {
-  font-size: 1.75rem; /* Larger font for the value */
-  color: var(--accent-cyan);
-}
+
 
 .moduleButton .dataUnit {
   font-size: 1rem;
@@ -640,17 +642,18 @@
 /* Bottom right buttons container */
 .simulatorButtons {
   position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: 0.5rem;
+  right: 0.5rem;
   display: flex;
-  gap: 0.75rem;
+  gap:0.5rem;
   z-index: 100;
+  
   pointer-events: none;
 }
 
 .simulatorActionButton {
-  padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  font-weight: 1000;
   font-size: 0.95rem;
   border: none;
   border-radius: var(--border-radius-small);
