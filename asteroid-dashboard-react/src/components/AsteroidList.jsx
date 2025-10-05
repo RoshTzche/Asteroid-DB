@@ -1,7 +1,6 @@
 // src/components/AsteroidList.jsx
 import React from 'react';
 import useAsteroidStore from '../store';
-import styles from './AsteroidList.module.css';
 
 function AsteroidList() {
   const { 
@@ -29,61 +28,58 @@ function AsteroidList() {
   });
 
   if (asteroids.length === 0) {
-    return <div className={styles.loading}>Loading asteroids...</div>;
+    return <div className="loading">Loading asteroids...</div>;
   }
 
   return (
-    <div className={styles.listContainer}>
-      <h2 className={styles.title}>Catalog</h2>
+    <div className="listContainer">
+      <h2 className="listTitle">Catalog</h2>
       
-      <div className={styles.controlsContainer}>
+      <div className="controlsContainer">
         <input 
           type="text"
           placeholder="Search by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles.searchInput}
+          className="searchInput"
         />
-        <div className={styles.filterTabs}>
+        <div className="filterTabs">
           <button 
             onClick={() => setFilter('all')} 
-            className={`${styles.tabButton} ${filter === 'all' ? styles.selected : ''}`}>
+            className={`tabButton ${filter === 'all' ? 'selected' : ''}`}>
             All
           </button>
           <button 
             onClick={() => setFilter('pha')} 
-            className={`${styles.tabButton} ${filter === 'pha' ? styles.selected : ''}`}>
+            className={`tabButton ${filter === 'pha' ? 'selected' : ''}`}>
             PHA
           </button>
           <button 
             onClick={() => setFilter('non-pha')} 
-            className={`${styles.tabButton} ${filter === 'non-pha' ? styles.selected : ''}`}>
+            className={`tabButton ${filter === 'non-pha' ? 'selected' : ''}`}>
             Non-PHA
           </button>
         </div>
       </div>
 
-      <ul className={styles.list}>
+      <ul className="list">
         {filteredAsteroids.map((asteroid) => {
           const isPha = asteroid.es_peligroso === true || asteroid.es_peligroso === 'Y';
           return (
             <li key={asteroid.identificador}>
               <button
                 onClick={() => setSelectedAsteroid(asteroid)}
-                className={`
-                  ${styles.listItem} 
-                  ${selectedAsteroid?.identificador === asteroid.identificador ? styles.selected : ''}
-                `}
+                className={`listItem ${selectedAsteroid?.identificador === asteroid.identificador ? 'selected' : ''}`}
               >
-                <div className={styles.itemContent}>
-                  <span className={styles.itemName}>{asteroid.full_name || asteroid.identificador}</span>
-                  <span className={styles.itemDetails}>
+                <div className="itemContent">
+                  <span className="itemName">{asteroid.full_name || asteroid.identificador}</span>
+                  <span className="itemDetails">
                     {asteroid.diameter ? `Ø ${asteroid.diameter.toFixed(2)} km` : 'No diameter data'}
                   </span>
                 </div>
                 { isPha ? 
-                  <div className={styles.hazardousIndicator}></div> :
-                  <div className={styles.safeIndicator}></div>
+                  <div className="hazardousIndicator"></div> :
+                  <div className="safeIndicator"></div>
                 }
               </button>
             </li>

@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import useAsteroidStore from '../store';
 import AsteroidList from './AsteroidList';
 import AsteroidDetails from './AsteroidDetails';
-import styles from './AsteroidDashboard.module.css';
 
 function AsteroidDashboard() {
   const { setAsteroids } = useAsteroidStore();
@@ -19,12 +18,11 @@ function AsteroidDashboard() {
   }, [setAsteroids]);
 
   return (
-    <div className={styles.dashboardContainer}>
-      <div className={styles.listColumn}>
+    <div className="dashboardContainer">
+      <div className="listColumn">
         <AsteroidList />
       </div>
-      <div className={styles.detailsColumn}>
-        {/* This component will now manage its own view logic */}
+      <div className="detailsColumn">
         <AsteroidDetails />
       </div>
     </div>

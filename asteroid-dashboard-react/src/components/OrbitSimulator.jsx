@@ -3,101 +3,104 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Line, Text, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
+// No local CSS import is needed anymore
 
-const API_URL = 'http://127.0.0.1:5001';
-
-function CelestialBody({ position, size, color, name }) {
-  return (
-    <mesh position={position}>
-      <sphereGeometry args={[size, 64, 64]} />
-      <meshBasicMaterial color={color} />
-      <Text
-        position={[0, size + 0.05, 0]}
-        fontSize={0.1}
-        color="white"
-        anchorX="center"
-      >
-        {name}
-      </Text>
-    </mesh>
-  );
-}
-
-function Scene() {
-  const [orbits, setOrbits] = useState({});
-  const [positions, setPositions] = useState({});
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const orbitsRes = await fetch(`${API_URL}/api/orbits`);
-        if (!orbitsRes.ok) throw new Error('Failed to load orbits');
-        const orbitsData = await orbitsRes.json();
-        setOrbits(orbitsData);
-
-        const updatePositions = async () => {
-          try {
-            const posRes = await fetch(`${API_URL}/api/positions`);
-            if (!posRes.ok) throw new Error('Failed to load positions');
-            const posData = await posRes.json();
-            setPositions(posData);
-            setError(null);
-          } catch (e) {
-            setError('Could not connect to the server. Is \'asf.py\' running?');
-          }
-        };
-
-        updatePositions();
-        const interval = setInterval(updatePositions, 5000);
-        return () => clearInterval(interval);
-      } catch (e) {
-        setError('Initial network error. Check the server and reload the page.');
-      }
-    }
-    fetchData();
-  }, []);
-
+function Sun() {
   return (
     <>
-      <pointLight position={[0, 0, 0]} color="#facc15" intensity={3} distance={100} />
-      <CelestialBody position={[0, 0, 0]} size={0.15} color="#facc15" name="Sun" />
-
-      {Object.entries(orbits).map(([name, points]) => (
-        <Line
-          key={name}
-          points={points.map(p => new THREE.Vector3(p[0], p[1], 0))}
-          color={name === 'Tierra' ? '#06b6d4' : '#3f3f46'}
-          lineWidth={name === 'Tierra' ? 1.5 : 1}
-        />
-      ))}
-      
-      {Object.entries(positions).map(([name, pos]) => (
-        <CelestialBody
-          key={name}
-          position={[pos.x, pos.y, 0]}
-          size={name === 'Earth' ? 0.05 : 0.02}
-          color={name === 'Earth' ? '#06b6d4' : '#f97316'}
-          name={name}
-        />
-      ))}
-
-      {error && <Text position={[-3, 3, 0]} color="red" fontSize={0.2} anchorX="left">{error}</Text>}
+      <pointLight position={[0, 0, 0]} color="var(--color-primary)" intensity={3} distance={100} />
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.1, 32, 32]} />
+        <meshBasicMaterial color="var(--color-primary)" />
+        <Text position={[0, 0.2, 0]} fontSize={0.15} color="white" anchorX="center">Sun</Text>
+      </mesh>
     </>
   );
 }
 
+// The Scene now accepts colors as props
+function Scene({ earthColor, asteroidColor }) {
+  const [orbits, setOrbits] = useState({});
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchOrbits() {
+      try {
+        const response = await fetch('/orbitas_3d.json');
+        if (!response.ok) {
+          throw new Error('orbitas_3d.json not found.');
+        }
+        const data = await response.json();
+        setOrbits(data);
+      } catch (e) {
+        setError(e.message);
+      }
+    }
+    fetchOrbits();
+  }, []);
+
+  return (
+    <>
+      <Sun />
+      <gridHelper args={[20, 20]} rotation={[Math.PI / 2, 0, 0]} />
+
+      {Object.values(orbits).map((orbitData) => {
+        if (!orbitData.coordenadas) return null;
+        return (
+          <Line
+            key={orbitData.nombre}
+            points={orbitData.coordenadas.map(p => new THREE.Vector3(p[0], p[1], p[2]))}
+            // Use the colors from state props
+            color={orbitData.nombre === 'Tierra' ? earthColor : asteroidColor}
+            lineWidth={orbitData.nombre === 'Tierra' ? 1.5 : 1}
+          />
+        );
+      })}
+
+      {error && <Text position={[0, 0, 0]} color="var(--color-danger)" fontSize={0.2} anchorX="center">{error}</Text>}
+    </>
+  );
+}
+
+// Main component with state and UI controls
 function OrbitSimulator() {
-    return (
-          <div className="absolute top-5 right-5 w-full h-full border-2 border-white rounded-lg overflow-hidden z-10">  
-            <Suspense fallback={<div className="text-white">Loading simulator...</div>}>
-                <Canvas camera={{ position: [0, 0, 8], fov: 75, near: 0.1, far: 1000}}>
-                    <Scene />
-                    <OrbitControls />
-                </Canvas>
-            </Suspense>
+  const [earthColor, setEarthColor] = useState('#06b6d4');
+  const [asteroidColor, setAsteroidColor] = useState('#475569');
+
+  return (
+    // This div now uses the global class and has no inline styles. Its size is controlled by the CSS.
+    <div className="simulatorWrapper">
+      {/* Controls Panel */}
+      <div className="controlsPanel">
+        <div className="controlItem">
+          <label htmlFor="earthColor">Earth Orbit</label>
+          <input
+            type="color"
+            id="earthColor"
+            value={earthColor}
+            onChange={(e) => setEarthColor(e.target.value)}
+          />
         </div>
-    );
+        <div className="controlItem">
+          <label htmlFor="asteroidColor">Asteroid Orbits</label>
+          <input
+            type="color"
+            id="asteroidColor"
+            value={asteroidColor}
+            onChange={(e) => setAsteroidColor(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* 3D Canvas with corrected camera for 3D view */}
+      <Suspense fallback={<div className="text-white">Loading Simulator...</div>}>
+        <Canvas camera={{ position: [5, -5, 5], fov: 75, near: 0.1, far: 1000 }}>
+          <Scene earthColor={earthColor} asteroidColor={asteroidColor} />
+          <OrbitControls />
+        </Canvas>
+      </Suspense>
+    </div>
+  );
 }
 
 export default OrbitSimulator;
