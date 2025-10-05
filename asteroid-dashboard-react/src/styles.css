@@ -332,34 +332,43 @@
 /* ORBIT SIMULATOR*/
 
 .simulatorWrapper {
-  position: relative; /* Crucial for positioning the controls inside */
+  position: relative;
   width: 95%;
   aspect-ratio: 1 / 1;
   background-color: var(--color-background);
   border-radius: var(--radius-main);
 }
 
+/* Main panel is now horizontal */
 .controlsPanel {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background-color: rgba(13, 16, 21, 0.8); /* Semi-transparent surface */
+  background-color: rgba(13, 16, 21, 0.8);
   backdrop-filter: blur(5px);
   padding: 0.75rem;
   border-radius: var(--radius-main);
   border: 1px solid var(--color-border);
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: flex; /* Changed to flex for horizontal layout */
+  align-items: center; /* Vertically align items */
+  gap: 1.5rem; /* Space between asteroid control and planet grid */
   box-shadow: var(--shadow-panel);
+}
+
+/* Grid container for planets */
+.planetsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, 1fr);    /* 2 rows */
+  gap: 0.75rem 1rem; /* Row gap and column gap */
 }
 
 .controlItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem; /* Tighter gap for items in the grid */
 }
 
 .controlItem label {
@@ -369,7 +378,6 @@
   white-space: nowrap;
 }
 
-/* Custom styling for the color picker */
 .controlItem input[type="color"] {
   -webkit-appearance: none;
   -moz-appearance: none;
