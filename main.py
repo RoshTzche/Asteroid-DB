@@ -30,7 +30,6 @@ def export_to_json(df, filename='catalogo_asteroides_web.json'):
 
     df_export = df_export.where(pd.notna(df_export), None)
     
-    # --- CHANGE: Added 'full_name' to the list of final columns ---
     final_columns = [col for col in [
         'identificador', 'full_name', 'es_peligroso', 'magnitud_absoluta', 'diameter',
         'albedo', 'periodo_rotacion_horas', 'distancia_min_orbita_au', 
@@ -52,29 +51,34 @@ def main():
 
     df_processed = clean_and_prepare_data(df_asteroids)
 
-    print("\nFiltering and sorting for the 10,000 most interesting asteroids...")
+    # --- NEW LOGIC: Filter for asteroids with a real name first ---
+    df_named = df_processed[df_processed['full_name'].notna()].copy()
+    print(f"\nFound {len(df_named)} asteroids with a real name.")
 
-    if 'pha' in df_processed.columns:
-        df_processed['is_pha'] = df_processed['pha'].apply(lambda x: True if x == 'Y' else False)
+    print("Filtering and sorting for the 5,000 most interesting named asteroids...")
+
+    if 'pha' in df_named.columns:
+        df_named['is_pha'] = df_named['pha'].apply(lambda x: True if x == 'Y' else False)
     else:
-        df_processed['is_pha'] = False
+        df_named['is_pha'] = False
         print("Warning: 'pha' column not found. Cannot prioritize by hazard status.")
 
     sort_columns = ['is_pha', 'diameter', 'moid']
-    sort_ascending = [False, False, True]
+    sort_ascending = [False, False, True] # is_pha DESC, diameter DESC, moid ASC
     
-    available_sort_cols = [col for col in sort_columns if col in df_processed.columns]
+    available_sort_cols = [col for col in sort_columns if col in df_named.columns]
     available_sort_order = [order for col, order in zip(sort_columns, sort_ascending) if col in available_sort_cols]
 
     if not available_sort_cols:
-         print("Warning: Sorting columns not found. Taking the first 10,000 rows.")
-         df_interesting = df_processed.head(10000)
+         print("Warning: Sorting columns not found. Taking the first 5,000 named rows.")
+         df_interesting = df_named.head(5000)
     else:
         print(f"Sorting by: {available_sort_cols}")
-        df_interesting = df_processed.sort_values(
+        df_interesting = df_named.sort_values(
             by=available_sort_cols,
             ascending=available_sort_order
-        ).head(10000)
+        ).head(5000)
+    # --- END of new logic ---
 
     export_to_json(df_interesting.copy())
 
