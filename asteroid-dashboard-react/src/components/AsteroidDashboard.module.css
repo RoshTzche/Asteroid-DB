@@ -1,7 +1,9 @@
 /* src/components/AsteroidDashboard.module.css */
 .dashboardContainer {
   display: flex;
-  height: calc(100vh - 100px); /* Ajustamos la altura */
+  height: 100%; /* Use the full height of the parent */
+  padding: 1rem; /* Add the padding here */
+  box-sizing: border-box; /* Ensure padding doesn't add to the total size */
   gap: 1rem;
 }
 
@@ -12,5 +14,9 @@
 
 .detailsColumn {
   width: 66.666667%;
+  height: 100%;
   flex-grow: 1;
+  /* New properties o center the content */
+  align-items: center;
+  justify-content: center;
 }

@@ -7,64 +7,81 @@ from modules.visualizer import plot_orbital_distribution
 
 def export_to_json(df, filename='catalogo_asteroides_web.json'):
     """
-    Exporta el DataFrame final a un archivo JSON limpio, creando un
-    identificador robusto a partir del nombre completo o el SPK ID.
+    Exports the final DataFrame to a clean JSON file, including
+    both a robust identifier and the full name.
     """
-    print(f"\nGenerando archivo JSON para la web: {filename}...")
+    print(f"\nGenerating JSON file for the web: {filename}...")
 
-    # --- LÓGICA MEJORADA PARA EL IDENTIFICADOR ---
-    # 1. Aseguramos que la columna 'spkid' sea del tipo correcto para poder usarla.
     if 'spkid' in df.columns:
         df['spkid_str'] = df['spkid'].astype(str)
     else:
-        print("⚠️ No se encontró la columna 'spkid'. Se usará un índice como fallback.")
+        print("⚠️ 'spkid' column not found. Using index as a fallback.")
         df['spkid_str'] = df.index.astype(str)
 
-    # 2. Creamos la nueva columna 'identificador'.
-    #    Usa 'full_name' si no es nulo; si lo es, usa el 'spkid_str'.
     df['identificador'] = df['full_name'].fillna(df['spkid_str'])
 
-    # 3. Renombramos las columnas del CSV a nombres más amigables
     df_export = df.rename(columns={
         'is_pha': 'es_peligroso',
         'H': 'magnitud_absoluta',
         'rot_per': 'periodo_rotacion_horas',
         'moid': 'distancia_min_orbita_au',
         'per_y': 'periodo_orbital_anios',
-        'data_arc': 'arco_observacion_dias'
-        # 'full_name' ya no es necesario porque tenemos 'identificador'
     }, inplace=False, errors='ignore')
 
-    # Reemplazamos los NaN de Pandas con None para un JSON estándar
     df_export = df_export.where(pd.notna(df_export), None)
     
-    # Seleccionamos las columnas finales que queremos en el JSON
-    columnas_finales = [col for col in [
-        'identificador', 'es_peligroso', 'magnitud_absoluta', 'diameter', 
+    # --- CHANGE: Added 'full_name' to the list of final columns ---
+    final_columns = [col for col in [
+        'identificador', 'full_name', 'es_peligroso', 'magnitud_absoluta', 'diameter',
         'albedo', 'periodo_rotacion_horas', 'distancia_min_orbita_au', 
-        'a', 'e', 'i', 'om', 'w', 'ma', 'q', 'ad', 'periodo_orbital_anios', 'data_arc'
+        'a', 'e', 'i', 'om', 'w', 'ma', 'q', 'ad', 'periodo_orbital_anios'
     ] if col in df_export.columns]
     
-    df_export[columnas_finales].to_json(filename, orient='records', indent=4)
-    print(f"¡Éxito! Archivo '{filename}' creado con {len(df_export)} asteroides.")
+    df_export[final_columns].to_json(filename, orient='records', indent=4)
+    print(f"Success! File '{filename}' created with {len(df_export)} asteroids.")
 
 
 def main():
     """
-    Flujo de trabajo principal: Cargar catálogo local, procesar y exportar.
+    Main workflow: Load, process, filter, and export.
     """
     df_asteroids = load_local_jpl_catalog()
     
     if df_asteroids.empty:
         return
 
-    df_final = clean_and_prepare_data(df_asteroids)
-    export_to_json(df_final.copy())
+    df_processed = clean_and_prepare_data(df_asteroids)
 
-    print("\nGenerando visualización 2D del catálogo...")
-    plot_orbital_distribution(df_final)
+    print("\nFiltering and sorting for the 10,000 most interesting asteroids...")
+
+    if 'pha' in df_processed.columns:
+        df_processed['is_pha'] = df_processed['pha'].apply(lambda x: True if x == 'Y' else False)
+    else:
+        df_processed['is_pha'] = False
+        print("Warning: 'pha' column not found. Cannot prioritize by hazard status.")
+
+    sort_columns = ['is_pha', 'diameter', 'moid']
+    sort_ascending = [False, False, True]
     
-    print("\nProceso completado.")
+    available_sort_cols = [col for col in sort_columns if col in df_processed.columns]
+    available_sort_order = [order for col, order in zip(sort_columns, sort_ascending) if col in available_sort_cols]
+
+    if not available_sort_cols:
+         print("Warning: Sorting columns not found. Taking the first 10,000 rows.")
+         df_interesting = df_processed.head(10000)
+    else:
+        print(f"Sorting by: {available_sort_cols}")
+        df_interesting = df_processed.sort_values(
+            by=available_sort_cols,
+            ascending=available_sort_order
+        ).head(10000)
+
+    export_to_json(df_interesting.copy())
+
+    print("\nGenerating 2D visualization of the catalog...")
+    plot_orbital_distribution(df_interesting)
+    
+    print("\nProcess completed.")
 
 
 if __name__ == "__main__":

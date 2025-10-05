@@ -1,6 +1,6 @@
 /* src/components/AsteroidList.module.css */
 .listContainer {
-  background-color: #1e293b; /* space-light */
+  background-color: #000000; /* space-light */
   height: 100%;
   border-radius: 0.5rem;
   padding: 1rem;
@@ -12,7 +12,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  border-bottom: 2px solid #4b5563;
+  border-bottom: 2px solid #000101;
   padding-bottom: 0.5rem;
   color: #facc15; /* primary-yellow */
 }
@@ -21,8 +21,14 @@
   overflow-y: auto;
   flex-grow: 1;
   padding-right: 0.5rem;
-  list-style: none; /* Quitamos los puntitos de la lista */
+  list-style: none;
   padding-left: 0;
+}
+
+.loading {
+  padding: 1rem;
+  font-style: italic;
+  color: #9ca3af;
 }
 
 .listItem {
@@ -32,16 +38,19 @@
   margin: 0.25rem 0;
   border-radius: 0.375rem;
   transition: all 0.2s;
-  font-size: 1.125rem;
   cursor: pointer;
   border: none;
-  background-color: #334155; /* slate-700 */
+  background-color: #0d1015; /* slate-700 */
   color: #e2e8f0;
+  /* New styles for flex layout */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .listItem:hover {
   background-color: #475569; /* slate-600 */
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .selected {
@@ -49,55 +58,30 @@
   color: #0f172a; /* space-dark */
   font-weight: bold;
   box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
-}/* src/components/AsteroidList.module.css */
-.listContainer {
-  background-color: #1e293b; /* space-light */
-  height: 100%;
-  border-radius: 0.5rem;
-  padding: 1rem;
+}
+
+.itemContent {
   display: flex;
   flex-direction: column;
 }
 
-.title {
-  font-size: 1.5rem;
+.itemName {
+  font-size: 1rem;
   font-weight: bold;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #4b5563;
-  padding-bottom: 0.5rem;
-  color: #facc15; /* primary-yellow */
 }
 
-.list {
-  overflow-y: auto;
-  flex-grow: 1;
-  padding-right: 0.5rem;
-  list-style: none; /* Quitamos los puntitos de la lista */
-  padding-left: 0;
+.itemDetails {
+  font-size: 0.8rem;
+  color: #cbd5e1; /* slate-300 */
+  margin-top: 0.25rem;
 }
 
-.listItem {
-  width: 100%;
-  text-align: left;
-  padding: 0.75rem;
-  margin: 0.25rem 0;
-  border-radius: 0.375rem;
-  transition: all 0.2s;
-  font-size: 1.125rem;
-  cursor: pointer;
-  border: none;
-  background-color: #334155; /* slate-700 */
-  color: #e2e8f0;
-}
-
-.listItem:hover {
-  background-color: #475569; /* slate-600 */
-  transform: scale(1.03);
-}
-
-.selected {
-  background-color: #facc15; /* primary-yellow */
-  color: #0f172a; /* space-dark */
-  font-weight: bold;
-  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
+.hazardousIndicator {
+  width: 10px;
+  height: 10px;
+  background-color: #ef4444; /* red-500 */
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: 0.75rem;
+  box-shadow: 0 0 8px #ef4444;
 }

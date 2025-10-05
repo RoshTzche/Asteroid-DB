@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import useAsteroidStore from '../store';
 import AsteroidList from './AsteroidList';
 import AsteroidDetails from './AsteroidDetails';
-import styles from './AsteroidDashboard.module.css'; // ¡Importamos!
+import styles from './AsteroidDashboard.module.css';
 
 function AsteroidDashboard() {
   const { setAsteroids } = useAsteroidStore();
@@ -15,7 +15,7 @@ function AsteroidDashboard() {
         data.sort((a, b) => (a.identificador || '').localeCompare(b.identificador || ''));
         setAsteroids(data);
       })
-      .catch(err => console.error("¡Oh no, Senpai! Error al cargar:", err));
+      .catch(err => console.error("Error loading asteroid data:", err));
   }, [setAsteroids]);
 
   return (
@@ -24,6 +24,7 @@ function AsteroidDashboard() {
         <AsteroidList />
       </div>
       <div className={styles.detailsColumn}>
+        {/* This component will now manage its own view logic */}
         <AsteroidDetails />
       </div>
     </div>
