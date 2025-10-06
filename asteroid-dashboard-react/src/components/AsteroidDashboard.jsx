@@ -8,7 +8,7 @@ function AsteroidDashboard() {
   const { setAsteroids } = useAsteroidStore();
 
   useEffect(() => {
-    fetch('/catalogo_asteroides_web.json')
+    fetch('catalogo_asteroides_web.json')
       .then(res => res.json())
       .then(data => {
         data.sort((a, b) => (a.identificador || '').localeCompare(b.identificador || ''));
