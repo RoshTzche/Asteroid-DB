@@ -8,8 +8,16 @@ function AsteroidDashboard() {
   const { setAsteroids } = useAsteroidStore();
 
   useEffect(() => {
-    fetch('catalogo_asteroides_web.json')
-      .then(res => res.json())
+    // Construct the correct path for the fetch request
+    const jsonUrl = `${import.meta.env.BASE_URL}catalogo_asteroides_web.json`;
+
+    fetch(jsonUrl)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Network response was not ok: ${res.statusText}`);
+        }
+        return res.json();
+      })
       .then(data => {
         data.sort((a, b) => (a.identificador || '').localeCompare(b.identificador || ''));
         setAsteroids(data);
