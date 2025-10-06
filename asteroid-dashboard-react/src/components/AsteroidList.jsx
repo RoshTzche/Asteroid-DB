@@ -80,9 +80,10 @@ function AsteroidList() {
   return (
     <div className="listContainer">
       {showInfoPopup && <FilterInfoPopup onClose={() => setShowInfoPopup(false)} />}
-
-      <div className="listTitleContainer">
-        <h2 className="listTitle">Asteroid Catalog</h2>
+<a href="https://diegobca.github.io/NEOSphere/" className='returnButton'>
+  Return to NEOSphere
+</a>      <div className="listTitleContainer">
+          <h2 className="listTitle">Asteroid Catalog</h2>
         <button className="suggestionButton" onClick={() => setShowInfoPopup(true)}>?</button>
       </div>
       

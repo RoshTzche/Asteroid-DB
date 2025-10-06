@@ -290,10 +290,34 @@
     background-color: var(--slate-600);
     transform: scale(1.02);
 }
+.returnButton {
+  /* Let the button's width adapt to its content */
+  display: inline-block;
+  width: auto;
 
-/* Estilos adicionales para clases en JSX no definidas en módulos originales (reciclando variables) */
-.controlsContainer {
+  /* Visual styling and spacing */
+  background-color: var(--slate-700);
+  color: #e2e8f0;
+  padding: 0.2rem; /* Increased padding for a better look and feel */
+  margin-bottom: 0.75rem; /* Space below the button */
+  border: none;
+  border-radius: var(--border-radius-small);
+  text-align: center;
+  font-size: 0.9rem;
+
+  /* Interaction feedback */
+  cursor: pointer;
+  transition: var(--transition-standard);
+  
+  /* Note: The 'flex', 'justify-content', and 'align-items' properties 
+     were removed as they are for flex containers, not for the button itself. */
 }
+
+.returnButton:hover {
+  background-color: var(--slate-600);
+  transform: scale(1.02);
+}
+
 
 .searchInput {
     width: 95%;
@@ -399,8 +423,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--padding-standard);
   border-bottom: 2px solid var(--border-dark);
+  margin-top: -20px;
 }
 
 .suggestionButton {
