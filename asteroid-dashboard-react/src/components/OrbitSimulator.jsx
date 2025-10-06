@@ -49,7 +49,7 @@ function Scene({ planetColors, asteroidColor, hideOrbits, hiddenAsteroids }) {
   useEffect(() => {
     async function fetchOrbits() {
       try {
-        const response = await fetch('/orbitas_3d.json');
+        const response = await fetch('orbitas_3d.json');
         if (!response.ok) throw new Error('orbitas_3d.json not found.');
         const data = await response.json();
         setOrbits(data);
