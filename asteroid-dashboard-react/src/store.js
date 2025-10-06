@@ -5,7 +5,7 @@ const useAsteroidStore = create((set) => ({
   asteroids: [],
   selectedAsteroid: null,
   searchTerm: '',
-  filter: 'all', // For PHA status
+  filter: 'non-pha', // For PHA status
   nameFilter: 'all', // New state for name filter
   diameterFilter: 'all', // Existing state for diameter
   

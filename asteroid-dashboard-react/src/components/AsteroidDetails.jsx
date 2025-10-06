@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import useAsteroidStore from '../store';
 import { motion, AnimatePresence } from 'framer-motion';
 import OrbitSimulator from './OrbitSimulator';
-
+import AsteroidAIInsights from './AsteroidAIInsights';
 // --- Reusable Popup Component ---
 function InfoPopup({ content, onClose }) {
   if (!content) return null;
@@ -138,7 +138,8 @@ function AsteroidDetails() {
             Show Orbit Simulator
           </button>
         </div>
-        
+        <AsteroidAIInsights className="AI" asteroid={selectedAsteroid} />
+
         <div className='moduleGroup'>
           <h2 className="moduleGroupTitle">Distances & Orbit</h2>
           <div className="moduleGrid">

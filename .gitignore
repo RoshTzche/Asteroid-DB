@@ -1,7 +1,7 @@
 # Ignorar archivos de caché y bases de datos
 *.json
 *.csv
-
+*.env
 !asteroid-dashboard-react/package.json
 !asteroid-dashboard-react/public/catalogo_asteroides_web.json
 !asteroid-dashboard-react/public/orbitas_3d.json

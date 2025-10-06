@@ -147,7 +147,7 @@ function OrbitSimulator({ onReturn }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCanvasKey(prev => prev + 1);
-    }, 1000);
+    }, 200);
     
     return () => clearTimeout(timer);
   }, []);
@@ -226,7 +226,9 @@ function OrbitSimulator({ onReturn }) {
             hideOrbits={hideOrbits}
             hiddenAsteroids={hiddenAsteroids}
           />
+          
           <OrbitControls minDistance={1} maxDistance={80} />
+          
         </Canvas>
       </Suspense>
     </div>

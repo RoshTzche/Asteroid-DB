@@ -29,6 +29,11 @@
     --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+.AI{
+    bottom: auto;
+    size: 3rem;
+}
+
 /* Estilos de AsteroidDashboard */
 .dashboardContainer {
     display: flex;
@@ -676,4 +681,161 @@
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
 }
 
+/* Agregar estos estilos al final de tu archivo styles.css */
 
+/* Camera Preset Buttons */
+.presetButtons {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.presetButton {
+  padding: 0.4rem 0.8rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid var(--primary-yellow);
+  background-color: rgba(15, 23, 42, 0.8);
+  color: var(--primary-yellow);
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  pointer-events: auto;
+}
+
+.presetButton:hover {
+  background-color: var(--primary-yellow);
+  color: var(--space-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* AI Insights Styles */
+.aiInsightsContainer {
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-dark);
+  padding-top: 1rem;
+}
+
+.aiInsightsToggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(250, 204, 21, 0.1);
+  border: 1px solid var(--primary-yellow);
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--primary-yellow);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.aiInsightsToggle:hover {
+  background-color: rgba(250, 204, 21, 0.2);
+  transform: translateY(-2px);
+}
+
+.aiInsightsToggle .arrow {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.aiInsightsToggle .arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.aiInsightsContent {
+  overflow: hidden;
+}
+
+.aiInsightsLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+.errormsg{
+    color: var(--gray-400);
+}
+
+.spinner {
+  border: 3px solid rgba(250, 204, 21, 0.3);
+  border-top: 3px solid var(--primary-yellow);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.aiInsightsError {
+  padding: 1.5rem;
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid var(--red-600);
+  border-radius: var(--border-radius-small);
+  text-align: center;
+}
+
+.aiInsightsError .retryButton {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-yellow);
+  color: var(--space-dark);
+  border: none;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.aiInsightsError .retryButton:hover {
+  background-color: var(--yellow-300);
+}
+
+.aiInsightsText {
+  padding: 1.5rem;
+  background-color: rgba(15, 23, 42, 0.5);
+  border-radius: var(--border-radius-small);
+  line-height: 1.8;
+  color: white;
+  margin: 1rem 0;
+  text-decoration: none !important;
+}
+.aiInsightsText * {
+  text-decoration: none !important;
+}
+
+.aiInsightsEmpty {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--gray-400);
+  font-style: italic;
+}
+
+/* Responsive adjustments for preset buttons */
+@media (max-width: 768px) {
+  .presetButtons {
+    flex-direction: column;
+    right: 0.3rem;
+    top: 0.3rem;
+  }
+  
+  .presetButton {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

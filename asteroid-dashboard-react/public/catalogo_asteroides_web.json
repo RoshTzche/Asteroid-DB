@@ -748,7 +748,7 @@
         "periodo_orbital_anios":4.97
     },
         {"identificador":"Abish (2004 AEMG21)",
-        "full_name":"Elizabeth love u",
+        "full_name":"Elizabeth Abish love u",
         "es_peligroso":false,
         "magnitud_absoluta":9.28,
         "diameter":4.0,
@@ -52120,23 +52120,6 @@
         "periodo_orbital_anios":12.0
     },
     {
-        "identificador":"       (2011 MM4)",
-        "full_name":"       (2011 MM4)",
-        "es_peligroso":false,
-        "magnitud_absoluta":9.51,
-        "diameter":63.7,
-        "albedo":0.083,
-        "periodo_rotacion_horas":null,
-        "a":21.21,
-        "e":0.4739,
-        "i":100.33,
-        "om":282.62,
-        "w":7.26,
-        "q":11.162,
-        "ad":31.27,
-        "periodo_orbital_anios":97.7
-    },
-    {
         "identificador":"   949 Hel (A921 EM)",
         "full_name":"   949 Hel (A921 EM)",
         "es_peligroso":false,
@@ -57014,23 +56997,6 @@
         "q":4.954,
         "ad":5.4,
         "periodo_orbital_anios":11.8
-    },
-    {
-        "identificador":"       (2010 BK118)",
-        "full_name":"       (2010 BK118)",
-        "es_peligroso":false,
-        "magnitud_absoluta":10.3,
-        "diameter":46.4,
-        "albedo":0.068,
-        "periodo_rotacion_horas":null,
-        "a":450.2,
-        "e":0.9864,
-        "i":143.88,
-        "om":176.0,
-        "w":179.26,
-        "q":6.136,
-        "ad":894.22,
-        "periodo_orbital_anios":9550.0
     },
     {
         "identificador":"  1227 Geranium (1931 TD)",
@@ -70531,23 +70497,6 @@
         "periodo_orbital_anios":5.31
     },
     {
-        "identificador":"       (2010 FH92)",
-        "full_name":"       (2010 FH92)",
-        "es_peligroso":false,
-        "magnitud_absoluta":11.4,
-        "diameter":28.0,
-        "albedo":0.047,
-        "periodo_rotacion_horas":null,
-        "a":24.36,
-        "e":0.762,
-        "i":61.81,
-        "om":280.34,
-        "w":313.9,
-        "q":5.798,
-        "ad":42.93,
-        "periodo_orbital_anios":120.0
-    },
-    {
         "identificador":"  2846 Ylppo (1942 CJ)",
         "full_name":"  2846 Ylppo (1942 CJ)",
         "es_peligroso":false,
@@ -72163,40 +72112,6 @@
         "periodo_orbital_anios":11.7
     },
     {
-        "identificador":"       (2010 ES65)",
-        "full_name":"       (2010 ES65)",
-        "es_peligroso":false,
-        "magnitud_absoluta":11.9,
-        "diameter":26.9,
-        "albedo":0.049,
-        "periodo_rotacion_horas":null,
-        "a":21.55,
-        "e":0.5625,
-        "i":10.45,
-        "om":273.28,
-        "w":238.3,
-        "q":9.43,
-        "ad":33.68,
-        "periodo_orbital_anios":100.0
-    },
-    {
-        "identificador":"  1209 Pumma (1927 HA)",
-        "full_name":"  1209 Pumma (1927 HA)",
-        "es_peligroso":false,
-        "magnitud_absoluta":10.81,
-        "diameter":26.889,
-        "albedo":0.141,
-        "periodo_rotacion_horas":8.5001,
-        "a":3.169,
-        "e":0.1267,
-        "i":6.94,
-        "om":89.74,
-        "w":176.51,
-        "q":2.768,
-        "ad":3.57,
-        "periodo_orbital_anios":5.64
-    },
-    {
         "identificador":"  6983 Komatsusakyo (1993 YC)",
         "full_name":"  6983 Komatsusakyo (1993 YC)",
         "es_peligroso":false,
@@ -72246,6 +72161,23 @@
         "q":4.694,
         "ad":5.71,
         "periodo_orbital_anios":11.9
+    },
+    {
+        "identificador":"  6389 Rosh (2006 Feb)",
+        "full_name":"  Invented asteroid (2006 Rosh)",
+        "es_peligroso":false,
+        "magnitud_absoluta":11.47,
+        "diameter":26.889,
+        "albedo":0.035,
+        "periodo_rotacion_horas":9.88464,
+        "a":3.219,
+        "e":0.122,
+        "i":7.78,
+        "om":110.05,
+        "w":228.02,
+        "q":2.826,
+        "ad":3.61,
+        "periodo_orbital_anios":5.77
     },
     {
         "identificador":" 37297 (2001 BQ77)",
@@ -77280,23 +77212,6 @@
         "periodo_orbital_anios":11.7
     },
     {
-        "identificador":"       (2008 HY21)",
-        "full_name":"       (2008 HY21)",
-        "es_peligroso":false,
-        "magnitud_absoluta":12.2,
-        "diameter":24.0,
-        "albedo":0.044,
-        "periodo_rotacion_horas":null,
-        "a":10.96,
-        "e":0.5041,
-        "i":11.98,
-        "om":53.32,
-        "w":164.17,
-        "q":5.435,
-        "ad":16.48,
-        "periodo_orbital_anios":36.3
-    },
-    {
         "identificador":" 23382 Epistrophos (4536 T-2)",
         "full_name":" 23382 Epistrophos (4536 T-2)",
         "es_peligroso":false,
@@ -77720,23 +77635,6 @@
         "q":2.853,
         "ad":3.51,
         "periodo_orbital_anios":5.68
-    },
-    {
-        "identificador":"       (2007 VH305)",
-        "full_name":"       (2007 VH305)",
-        "es_peligroso":false,
-        "magnitud_absoluta":11.6,
-        "diameter":23.8,
-        "albedo":0.07,
-        "periodo_rotacion_horas":null,
-        "a":24.28,
-        "e":0.6625,
-        "i":6.21,
-        "om":165.82,
-        "w":248.89,
-        "q":8.195,
-        "ad":40.36,
-        "periodo_orbital_anios":120.0
     },
     {
         "identificador":" 31806 (1999 NE11)",
