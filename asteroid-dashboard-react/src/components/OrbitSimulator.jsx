@@ -147,7 +147,7 @@ function OrbitSimulator({ onReturn }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCanvasKey(prev => prev + 1);
-    }, 200);
+    }, 1000);
     
     return () => clearTimeout(timer);
   }, []);
@@ -219,7 +219,7 @@ function OrbitSimulator({ onReturn }) {
       </div>
 
       <Suspense fallback={<div className="text-white">Loading Simulator...</div>}>
-        <Canvas key={canvasKey} camera={{ position: [0, 10, 0], fov: 75, near: 0.1, far: 1000 }}>
+        <Canvas key={canvasKey} camera={{ position: [20, 20, 20], fov: 75, near: 0.1, far: 1000 }}>
           <Scene 
             planetColors={planetColors} 
             asteroidColor={asteroidColor}
@@ -227,7 +227,7 @@ function OrbitSimulator({ onReturn }) {
             hiddenAsteroids={hiddenAsteroids}
           />
           
-          <OrbitControls minDistance={1} maxDistance={80} />
+          <OrbitControls minDistance={1} maxDistance={80} target={[0,-0.2,0]} />
           
         </Canvas>
       </Suspense>
