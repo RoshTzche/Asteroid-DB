@@ -247,9 +247,12 @@
 .itemDetails {
     font-size: 0.8rem;
     color: var(--slate-300);
-    margin-top: 0.25rem;
+    margin-top: 0rem;
 }
-
+.listItem.selected .itemName,
+.listItem.selected .itemDetails {
+  color: #000000; /* Negro */
+}
 .hazardousIndicator {
     width: 10px;
     height: 10px;
@@ -270,6 +273,11 @@
     box-shadow: 0 0 8px #97c900;
 }
 
+.infoDetails {
+  color: var(--gray-400);
+ transform: translateY(-25px);
+ margin: 0px;
+}
 .tabButton {
     width: 33%;
     text-align: center;
@@ -296,14 +304,14 @@
   width: auto;
 
   /* Visual styling and spacing */
-  background-color: var(--slate-700);
+  background-color: var(--slate-600);
   color: #e2e8f0;
   padding: 0.2rem; /* Increased padding for a better look and feel */
   margin-bottom: 0.75rem; /* Space below the button */
   border: none;
   border-radius: var(--border-radius-small);
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
 
   /* Interaction feedback */
   cursor: pointer;
@@ -743,7 +751,7 @@
 .aiInsightsContainer {
   margin-top: 2rem;
   border-top: 1px solid var(--border-dark);
-  padding-top: 1rem;
+  padding-top: 2rem;
 }
 
 .aiInsightsToggle {
@@ -759,7 +767,7 @@
   transition: all 0.3s ease;
   color: var(--primary-yellow);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 2.5rem;
 }
 
 .aiInsightsToggle:hover {
@@ -769,7 +777,7 @@
 
 .aiInsightsToggle .arrow {
   transition: transform 0.3s ease;
-  font-size: 0.8rem;
+  font-size: 2.5rem;
 }
 
 .aiInsightsToggle .arrow.expanded {

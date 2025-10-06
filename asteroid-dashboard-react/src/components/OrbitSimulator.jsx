@@ -18,7 +18,7 @@ const INITIAL_PLANET_COLORS = {
 
 // Background component for space
 function SpaceBackground() {
-  const texture = useLoader(THREE.TextureLoader, '/8k_stars_milky_way.jpg');
+  const texture = useLoader(THREE.TextureLoader, `${import.meta.env.BASE_URL}8k_stars_milky_way.jpg`);
   return (
     <mesh>
       <sphereGeometry args={[500, 60, 40]} />
@@ -28,7 +28,7 @@ function SpaceBackground() {
 }
 
 function Sun() {
-  const sunTexture = useLoader(THREE.TextureLoader, '/2k_sun.jpg');
+  const sunTexture = useLoader(THREE.TextureLoader, `${import.meta.env.BASE_URL}2k_sun.jpg`);
   return (
     <>
       <mesh>
@@ -49,7 +49,7 @@ function Scene({ planetColors, asteroidColor, hideOrbits, hiddenAsteroids }) {
   useEffect(() => {
     async function fetchOrbits() {
       try {
-        const response = await fetch('orbitas_3d.json');
+        const response = await fetch(`${import.meta.env.BASE_URL}orbitas_3d.json`);
         if (!response.ok) throw new Error('orbitas_3d.json not found.');
         const data = await response.json();
         setOrbits(data);
@@ -66,7 +66,7 @@ function Scene({ planetColors, asteroidColor, hideOrbits, hiddenAsteroids }) {
       <Sun />
 
       {Object.entries(orbits).map(([nombre, orbitData]) => {
-        if (!orbitData.coordenadas) return null;
+        if (!orbitData.coordenadas || orbitData.coordenadas.length === 0) return null;
         
         // Check if the orbit belongs to a planet using the passed colors object
         const isPlanet = planetColors.hasOwnProperty(nombre);
@@ -79,13 +79,29 @@ function Scene({ planetColors, asteroidColor, hideOrbits, hiddenAsteroids }) {
         // Assign color dynamically
         const color = isPlanet ? planetColors[nombre] : asteroidColor;
 
+        // NUEVO: Define la posición para la etiqueta de texto usando el primer punto de la órbita.
+        const textPosition = orbitData.coordenadas[0];
+
+        // NUEVO: Se usa un Fragment (<>) para devolver la Línea y el Texto juntos.
         return (
-          <Line
-            key={nombre}
-            points={orbitData.coordenadas.map(p => new THREE.Vector3(p[0], p[1], p[2]))}
-            color={color}
-            lineWidth={isPlanet ? 1.5 : 1}
-          />
+          <React.Fragment key={nombre}>
+            <Line
+              points={orbitData.coordenadas.map(p => new THREE.Vector3(p[0], p[1], p[2]))}
+              color={color}
+              lineWidth={isPlanet ? 1.5 : 1}
+            />
+            {/* NUEVO: Se añade el componente <Text> para mostrar el nombre */}
+            <Text
+              // Se posiciona en el primer punto de la órbita con un pequeño desplazamiento hacia arriba
+              position={[textPosition[0], textPosition[1] + 0.15, textPosition[2]]}
+              fontSize={isPlanet ? 0.25 : 0.1} // Nombres de planetas más grandes
+              color="white"
+              anchorX="left"
+              anchorY="middle"
+            >
+              {nombre}
+            </Text>
+          </React.Fragment>
         );
       })}
       {error && <Text position={[0, 0, 0]} color="var(--color-danger)" fontSize={0.2} anchorX="center">{error}</Text>}
@@ -108,7 +124,7 @@ function OrbitSimulator({ onReturn }) {
     if (!isInitialized.current) {
       async function initHiddenAsteroids() {
         try {
-          const response = await fetch('/orbitas_3d.json');
+          const response = await fetch(`${import.meta.env.BASE_URL}orbitas_3d.json`);
           if (response.ok) {
             const data = await response.json();
             const allOrbitNames = Object.keys(data);

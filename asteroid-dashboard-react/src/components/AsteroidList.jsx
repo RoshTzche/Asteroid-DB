@@ -80,7 +80,7 @@ function AsteroidList() {
   return (
     <div className="listContainer">
       {showInfoPopup && <FilterInfoPopup onClose={() => setShowInfoPopup(false)} />}
-<a href="https://diegobca.github.io/NEOSphere/" className='returnButton'>
+<a href="https://neo-sphere-llub.vercel.app/" className='returnButton'>
   Return to NEOSphere
 </a>      <div className="listTitleContainer">
           <h2 className="listTitle">Asteroid Catalog</h2>
@@ -104,12 +104,12 @@ function AsteroidList() {
           <button 
             onClick={() => setFilter('pha')} 
             className={`tabButton ${filter === 'pha' ? 'selected' : ''}`}>
-            PHA
+            Hazarodus
           </button>
           <button 
             onClick={() => setFilter('non-pha')} 
             className={`tabButton ${filter === 'non-pha' ? 'selected' : ''}`}>
-            Non-PHA
+            Non Hazardous
           </button>
         </div>
         {/* New Filters */}

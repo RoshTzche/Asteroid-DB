@@ -120,7 +120,7 @@ Respond only with the plain text facts.`;
         className="aiInsightsToggle"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <span>AI Information</span>
+        <span>AI-steroid data</span>
         <span className={`arrow ${isExpanded ? 'expanded' : ''}`}>▼</span>
       </button>
 

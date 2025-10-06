@@ -142,6 +142,7 @@ function AsteroidDetails() {
 
         <div className='moduleGroup'>
           <h2 className="moduleGroupTitle">Distances & Orbit</h2>
+          <p className='infoDetails'>(Click for more info.)</p>
           <div className="moduleGrid">
             <ModuleButton label="Min. Orbit Distance" value={selectedAsteroid.distancia_min_orbita_au?.toFixed(4) || 'N/A'} unit="AU" onClick={() => setPopupContent(POPUP_DEFINITIONS.MOID)} />
             <ModuleButton label="Perihelion (Closest to Sun)" value={selectedAsteroid.q?.toFixed(3) || 'N/A'} unit="AU" onClick={() => setPopupContent(POPUP_DEFINITIONS.PERIHELION)} />
